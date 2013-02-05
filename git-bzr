@@ -399,8 +399,8 @@ def cmd_clone(args):
   branch = 'master'
   bzr_ref = bzr_ref_name(branch)
 
-  if os.path.exists(target):
-    die('Directory already exists: %s', target)
+  if os.path.exists(target) and os.listdir(target) != []:
+    die('Directory already exists and isn\'t empty: %s', target)
 
   git(['init', target])
   os.chdir(target)
