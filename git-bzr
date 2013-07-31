@@ -642,8 +642,8 @@ def cmd_clear(args):
 
 
 def cmd_marks(args):
-  parser = optparse.OptionParser(usage='git bzr push <url>')
-  parser.description = ('Effectively a bzr push <url>')
+  parser = optparse.OptionParser(usage='git bzr marks')
+  parser.description = ('Print all marks')
   parser.add_option('--git', action='store_true', dest='git',
                     default=True,
                     help='show the git marks file')
