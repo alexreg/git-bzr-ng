@@ -673,6 +673,50 @@ def cmd_marks(args):
     print open(marks).read()
 
 
+def cmd_pack(args):
+  parser = optparse.OptionParser(usage='git bzr pack')
+  parser.description = ('Compress the bzr repository in GIT_DIR')
+  parser.add_option('--clean-obsolete-packs', action='store_true', dest='clean_obsolete_packs',
+                    default=False,
+                    help='delete obsolete packs to save disk space')
+  parser.add_option('--verbose', action='store_true', dest='verbose',
+                    default=False,
+                    help='display more information')
+  parser.add_option('--quiet', action='store_true', dest='quiet',
+                    default=False,
+                    help='only display errors and warnings')
+  (options, args) = parser.parse_args(args)
+
+  cl = Changelist()
+
+  bzr_pack_arg = []
+  if options.clean_obsolete_packs:
+    bzr_pack_arg += ['--clean-obsolete-packs']
+  if options.verbose:
+    bzr_pack_arg += ['--verbose']
+  if options.quiet:
+    bzr_pack_arg += ['--quiet']
+
+  bzr_ref = None
+  if len(args):
+    bzr_ref = args[0]
+
+  if bzr_ref:
+    ref_in_bzr = get_cfg('%s.bzr' % bzr_ref)
+    if not ref_in_bzr:
+      die('bzr pack failed: there\'s no branch with the name "' + bzr_ref + '"')
+    else:
+      bzr_ref = ref_in_bzr
+
+  if bzr_ref:
+    branch = branch_name(bzr_ref)
+    os.chdir(cl.bzr_dir(branch))
+  else:
+    os.chdir(cl.bzr_dir())
+
+  bzr(['pack'] + bzr_pack_arg)
+
+
 COMMANDS = [
   ('init', 'init a new bzr branch', cmd_init),
   ('clone', 'clone a bzr repo', cmd_clone),
@@ -682,6 +726,7 @@ COMMANDS = [
   ('pull', 'sync bzr tracking branch to remote and pull from it', cmd_pull),
   ('import', 'import a bzr branch as a new git branch', cmd_import),
   ('marks', 'show the marks files for a branch', cmd_marks),
+  ('pack', 'compress the bzr repository in GIT_DIR', cmd_pack),
 ]
 
 
