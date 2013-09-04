@@ -34,7 +34,7 @@ def run_command(cmd, error_ok=False, error_message=None, exit_code=False,
   if redirect_stdout and stdout is None:
     stdout = subprocess.PIPE
 
-  proc = subprocess.Popen(cmd, stdout=stdout, stdin=stdin)
+  proc = subprocess.Popen(cmd, stdout=stdout, stdin=stdin, shell=True)
 
   if return_proc:
     return proc
@@ -353,7 +353,7 @@ def init_repo(cl=None):
 
 def cmd_init(args):
   parser = optparse.OptionParser(usage='git bzr init')
-  parser.description = ('Init a new bzr tracking branch based on master')
+  parser.description = ('Initialize a new bzr tracking branch based on master')
   (options, args) = parser.parse_args(args)
 
   cl = Changelist()
@@ -379,7 +379,7 @@ def cmd_init(args):
 
 def cmd_clone(args):
   parser = optparse.OptionParser(usage='git bzr clone <url> [<target>]')
-  parser.description = ('Effectively a bzr branch <url>')
+  parser.description = ('Effectively equivalent to `bzr branch <url>`')
   parser.add_option('--strip_tags', action='store_true', dest='strip_tags',
                     help='strip tags from bzr when importing')
   (options, args) = parser.parse_args(args)
@@ -402,7 +402,7 @@ def cmd_clone(args):
   bzr_ref = bzr_ref_name(branch)
 
   if os.path.exists(target) and os.listdir(target) != []:
-    die('Directory already exists and isn\'t empty: %s', target)
+    die('Directory already exists and is not empty: %s', target)
 
   git(['init', target])
   os.chdir(target)
@@ -423,7 +423,7 @@ def cmd_clone(args):
 
 def cmd_push(args):
   parser = optparse.OptionParser(usage='git bzr push <url>')
-  parser.description = ('Effectively a bzr push <url>')
+  parser.description = ('Effectively equivalent to `bzr push <url>`')
   parser.add_option('--parent_branch', action='store', dest='parent_branch',
                     default='master',
                     help='use this branch as the parent branch')
@@ -498,7 +498,7 @@ def cmd_push(args):
 
 def cmd_sync(args):
   parser = optparse.OptionParser(usage='git bzr sync <bzr_branch>')
-  parser.description = ('Sync a bzr tracking branch (bzr/*) with remote')
+  parser.description = ('Synchronize a bzr tracking branch (bzr/*) with its remote')
   parser.add_option('--overwrite', action='store_true', dest='overwrite',
                     help='overwrite tracking branch with remote copy')
   (options, args) = parser.parse_args(args)
@@ -537,7 +537,7 @@ def cmd_sync(args):
 
 def cmd_pull(args):
   parser = optparse.OptionParser(usage='git bzr pull <bzr_branch>')
-  parser.description = ('Sync a bzr tracking branch (bzr/*) with remote')
+  parser.description = ('Synchronize a bzr tracking branch (bzr/*) with its remote')
   parser.add_option('--overwrite', action='store_true', dest='overwrite',
                     help='overwrite tracking branch with remote copy')
   (options, args) = parser.parse_args(args)
@@ -643,7 +643,7 @@ def cmd_clear(args):
 
 def cmd_marks(args):
   parser = optparse.OptionParser(usage='git bzr marks')
-  parser.description = ('Print all marks')
+  parser.description = ('Show the current marks files for a branch')
   parser.add_option('--git', action='store_true', dest='git',
                     default=True,
                     help='show the git marks file')
