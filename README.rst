@@ -90,6 +90,7 @@ Requirements
 * bzr-fastimport 0.10 http://launchpad.net/bzr-fastimport/trunk/0.10.0/+download/bzr-fastimport-0.10.0.tar.gz
 * python-fastimport, for bzr-fastimport (bzr branch lp:python-fastimport)
 * You also need to put the git-bzr script somewhere in your path
+* python-nose, if you want to run the test suite
 
 
 Troubleshooting
